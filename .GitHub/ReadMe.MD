@@ -48,7 +48,7 @@
 - One to five assistant accounts (string sessions) join voice chats through PyTgCalls and stream audio or video, processed by FFmpeg.
 - Track metadata comes from YouTube search and the Spotify, Apple Music, Resso and SoundCloud resolvers. Audio and video files are downloaded through the zefBots API.
 - Queue state is kept in memory per chat. Settings, authorized users, bans and statistics are stored in MongoDB.
-- The now playing message is a photo card with native inline buttons. Its keyboard, including the live progress bar, is edited in place as playback progresses.
+- The now playing message is a rich message that is edited in place as playback progresses.
 
 </details>
 
@@ -71,7 +71,7 @@ Play audio or video in group voice chats, or in a linked channel with the `c` co
 
 <br>
 
-The now playing panel uses native inline buttons: a live progress bar, then Replay, Pause or Resume and Skip, then Queue and More (autoplay and suggestions), and End Queue at the bottom. Songs added to a running queue get their own Play Now, Skip and End controls.
+The now playing panel is a rich message with replay, pause or resume, skip and queue controls and a live progress bar. Control colors change on every progress update. Songs added to a running queue get their own Play Now, Skip and End controls.
 
 </details>
 
@@ -405,7 +405,7 @@ zefmusic/
   core/        bot client, assistants, call layer, database, git helpers
   platforms/   YouTube, Spotify, Apple Music, Resso, SoundCloud, Telegram
   plugins/     command handlers: admins, bot, play, sudo, tools, misc
-  utils/       stream engine, now playing player, inline keyboards, thumbnails
+  utils/       stream engine, rich message player, inline keyboards, thumbnails
 strings/       help text and language files
 config.py      environment loading and defaults
 ```
@@ -449,7 +449,7 @@ Add the text as `HELP_<n>` in `strings/helpers.py`, the button label as `H_B_<n>
 
 <br>
 
-The now playing player and its inline keyboards are defined in `zefmusic/utils/rich_stream.py`.
+The rich message player, its buttons and their colors are defined in `zefmusic/utils/rich_stream.py`.
 
 </details>
 
