@@ -83,10 +83,10 @@ def build_now_playing_markup(
     """Player keyboard.
 
         ◉ progress bar (only once playback has started)
-        🔁 Replay | ⏸ Pause / ▶️ Resume | ⏭ Skip
-        📜 Queue · N | ✨ More  (becomes 🔙 Back while the submenu is open)
-        🟢 Autoplay | 💡 Suggestions   (submenu only)
-        ❌ End Queue
+        🔁 | ⏸ / ▶️ | ⏭
+        📜 N | ✨  (becomes 🔙 while the submenu is open)
+        🟢 / ⚪ | 💡   (submenu only)
+        ❌  (close)
     """
     rows = []
     if played and dur:
@@ -94,39 +94,37 @@ def build_now_playing_markup(
 
     if playing:
         toggle = _btn(
-            _["PLAYER_BTN_PAUSE"], f"ADMIN Pause|{chat_id}", ButtonStyle.PRIMARY
+            "⏸", f"ADMIN Pause|{chat_id}", ButtonStyle.PRIMARY
         )
     else:
         toggle = _btn(
-            _["PLAYER_BTN_RESUME"], f"ADMIN Resume|{chat_id}", ButtonStyle.PRIMARY
+            "▶️", f"ADMIN Resume|{chat_id}", ButtonStyle.PRIMARY
         )
     rows.append(
         [
-            _btn(_["PLAYER_BTN_REPLAY"], f"ADMIN Replay|{chat_id}"),
+            _btn("🔁", f"ADMIN Replay|{chat_id}"),
             toggle,
-            _btn(_["PLAYER_BTN_SKIP"], f"ADMIN Skip|{chat_id}"),
+            _btn("⏭", f"ADMIN Skip|{chat_id}"),
         ]
     )
 
     queue_btn = _btn(
-        _["PLAYER_BTN_QUEUE"].format(_queue_len(chat_id)),
+        f"📜 {_queue_len(chat_id)}",
         f"nowplaying_queue {chat_id}",
     )
     if chat_id in _more_open:
         rows.append(
-            [queue_btn, _btn(_["PLAYER_BTN_BACK"], f"nowplaying_back {chat_id}")]
+            [queue_btn, _btn("🔙", f"nowplaying_back {chat_id}")]
         )
         rows.append(
             [
                 _btn(
-                    _["PLAYER_BTN_AUTOPLAY_ON"]
-                    if autoplay_on
-                    else _["PLAYER_BTN_AUTOPLAY_OFF"],
+                    "🟢" if autoplay_on else "⚪",
                     f"nowplaying_autoplay {chat_id}",
                     ButtonStyle.SUCCESS if autoplay_on else None,
                 ),
                 _btn(
-                    _["PLAYER_BTN_RECOMMEND"],
+                    "💡",
                     f"nowplaying_rec {chat_id}",
                     ButtonStyle.PRIMARY,
                 ),
@@ -134,12 +132,10 @@ def build_now_playing_markup(
         )
     else:
         rows.append(
-            [queue_btn, _btn(_["PLAYER_BTN_MORE"], f"nowplaying_more {chat_id}")]
+            [queue_btn, _btn("✨", f"nowplaying_more {chat_id}")]
         )
 
-    rows.append(
-        [_btn(_["PLAYER_BTN_END_QUEUE"], f"ADMIN Stop|{chat_id}", ButtonStyle.DANGER)]
-    )
+    rows.append([_btn("❌", "close", ButtonStyle.DANGER)])
     return InlineKeyboardMarkup(rows)
 
 
